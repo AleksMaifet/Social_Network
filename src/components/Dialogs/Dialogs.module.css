@@ -1,0 +1,23 @@
+.dialog_wrapper{
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+}
+.dialog_item{}
+.item {
+    display: flex;
+    flex-direction: column;
+}
+.item a:hover{
+    color:gold;
+}
+.item a.active {
+    color: orangered;
+}
+.messages_item{}
+.dialog{}
+.avatar {
+    padding-right: 10px;
+    width: 30px;
+    height: 30px;
+}

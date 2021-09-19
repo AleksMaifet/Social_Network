@@ -1,0 +1,14 @@
+.nav{
+    grid-area: n;
+    background-color: green;
+    padding: 10px;
+}
+.item a {
+    color: orange;
+}
+.item a:hover {
+    color: gold;
+}
+.item a.active {
+    color: orangered;
+}

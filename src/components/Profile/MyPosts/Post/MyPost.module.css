@@ -1,0 +1,12 @@
+.item.avatar {
+    width: 200px;
+}
+.like img {
+    padding: 0 0.5rem;
+    width: 20px;
+    height: 20px;
+}
+.like {
+    display: flex;
+    align-items: center
+}

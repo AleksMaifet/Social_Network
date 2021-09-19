@@ -1,0 +1,23 @@
+.avatar {
+    width: 200px;
+}
+.textareaPost {
+    resize: none;
+    width: 200px;
+    height: 80px;
+}
+.buttonPost {
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    width: 100px;
+}
+.buttonPost:hover {
+    border: 2px solid black;
+}
+.myPosts {
+    padding: 15px;
+}
+.buttonWrapper {
+    height: 25px;
+}
