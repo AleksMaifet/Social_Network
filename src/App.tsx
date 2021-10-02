@@ -8,7 +8,8 @@ import {BrowserRouter, Route} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {ActionTypes, DialogsPageType, ProfilePageType} from "./components/state";
+import {ActionTypes, ProfilePageType} from "./components/Reducer/profileReducer";
+import {DialogsPageType} from "./components/Reducer/dialogsReducer";
 
 
 

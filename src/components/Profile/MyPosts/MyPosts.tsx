@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import {MyPost} from "./Post/MyPost";
-import {ActionTypes, AddNewPostAC, AddPostAC, ProfilePageType} from "../../state";
+import {ActionTypes, AddNewPostAC, AddPostAC, ProfilePageType} from "../../Reducer/profileReducer";
 
 type MyPostsType = {
 	posts:ProfilePageType

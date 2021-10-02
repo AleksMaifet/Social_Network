@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import s from './Dialogs.module.css';
-import {DialogsPageType, RootStateType} from "../state";
+import {DialogsPageType} from "../Reducer/dialogsReducer";
 
 type DialogsType = {
 	dialogs:DialogsPageType
