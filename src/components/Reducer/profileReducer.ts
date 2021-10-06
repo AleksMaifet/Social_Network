@@ -10,7 +10,7 @@ export type PostType = {
 	message:string
 	likesCount:number
 }
-type newPostTextType = string
+export type newPostTextType = string
 
 export type ProfilePageType ={
 	posts: PostType[]
@@ -18,7 +18,7 @@ export type ProfilePageType ={
 }
 
 
-const initialState = {
+const initialState:ProfilePageType = {
 		posts: [
 			{id: v1(), message: 'Hi, how are you?', likesCount: 12},
 			{id: v1(), message: 'It is my post', likesCount: 11},

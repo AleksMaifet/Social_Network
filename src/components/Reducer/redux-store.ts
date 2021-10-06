@@ -10,6 +10,6 @@ const reducersHandler = combineReducers({
 	sidebar: sideBarReducer
 })
 
-
+export type reducersHandlerType = ReturnType<typeof reducersHandler>
 
 export const store = createStore(reducersHandler);

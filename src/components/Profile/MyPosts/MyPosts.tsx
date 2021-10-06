@@ -1,21 +1,24 @@
 import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import {MyPost} from "./Post/MyPost";
-import {ActionTypes, AddNewPostAC, AddPostAC, ProfilePageType} from "../../Reducer/profileReducer";
+import {ProfilePageType} from "../../Reducer/profileReducer";
+import {useSelector} from "react-redux";
+import {reducersHandlerType} from "../../Reducer/redux-store";
 
 type MyPostsType = {
-	posts:ProfilePageType
-	dispatch:(action: ActionTypes) => void
+	OnNewText: (text:string) => void
+	OnNewPost:() => void
 }
 
 
-export function MyPosts({posts,dispatch}: MyPostsType) {
+export function MyPosts({OnNewText,OnNewPost}: MyPostsType) {
+	const posts = useSelector<reducersHandlerType,ProfilePageType>(state => state.profilePage)
 
 	const newText = (e:ChangeEvent<HTMLTextAreaElement>) => {
-		dispatch(AddNewPostAC(e.currentTarget.value));
+		OnNewText(e.currentTarget.value);
 	}
 	const newPost = () => {
-		dispatch(AddPostAC());
+		OnNewPost();
 	}
 
 	const myPostsString =

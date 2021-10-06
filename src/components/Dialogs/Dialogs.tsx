@@ -2,19 +2,20 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import s from './Dialogs.module.css';
 import {DialogsPageType} from "../Reducer/dialogsReducer";
+import {useSelector} from "react-redux";
+import {reducersHandlerType} from "../Reducer/redux-store";
 
-type DialogsType = {
-	dialogs:DialogsPageType
-}
 
-const Dialogs = (props:DialogsType) => {
-	let dialogsItem = props.dialogs.dialogs.map(k => {
+const Dialogs = () => {
+	const dialogs = useSelector<reducersHandlerType, DialogsPageType>(state => state.dialogsPage);
+
+	let dialogsItem = dialogs.dialogs.map(k => {
 		return <NavLink to={`/dialogs/${k.id}`}>
 			<img className={s.avatar} src={k.img}/>
 			{k.name}
 		</NavLink>
 	})
-	let message = props.dialogs.messages.map(m => {
+	let message = dialogs.messages.map(m => {
 		return <div>{m.message}</div>
 	})
 

@@ -1,18 +1,13 @@
 import React from "react";
-import {MyPosts} from "./MyPosts/MyPosts";
 import {ProfileInfo} from "./MyPosts/ProfileInfo/ProfileInfo";
-import {ActionTypes, ProfilePageType} from "../Reducer/profileReducer";
+import {MyPostsConteiner} from "./MyPosts/MyPostsContainer";
 
-type ProfileType = {
-	posts:ProfilePageType
-	dispatch:(action: ActionTypes) => void
-}
 
-export function Profile(props:ProfileType) {
+export function Profile() {
 	return (
 		<div>
 			<ProfileInfo/>
-			<MyPosts posts={props.posts} dispatch={props.dispatch}/>
+			<MyPostsConteiner/>
 		</div>
 	)
 }

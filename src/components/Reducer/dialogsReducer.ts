@@ -1,11 +1,11 @@
 import {v1} from "uuid";
 
 
-type MessageType = {
+export type MessageType = {
 	id:string
 	message:string
 }
-type DialogsType = {
+export type DialogsType = {
 	id:string
 	name:string
 	img:string
@@ -16,7 +16,7 @@ export type DialogsPageType ={
 	messages:MessageType[]
 }
 
-const initialState = {
+const initialState:DialogsPageType = {
 		dialogs: [
 			{id: v1(), name: 'Dimych', img: 'https://freesvg.org/img/Cartoon-Man-Avatar-2.png'},
 			{id: v1(), name: 'Aleks', img: 'https://freesvg.org/img/Cartoon-Man-Avatar-2.png'},
@@ -33,6 +33,6 @@ const initialState = {
 		]
 	}
 
-export const dialogsReducer = (state =initialState,action:any) => {
+export const dialogsReducer = (state =initialState,action:any):DialogsPageType => {
 	return state
 }

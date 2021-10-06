@@ -1,4 +1,4 @@
-type SidebarType = {}
+export type SidebarType = {}
 
 
 export const sideBarReducer = (state = {}, action: any) => {

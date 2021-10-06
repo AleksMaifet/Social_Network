@@ -8,27 +8,17 @@ import {BrowserRouter, Route} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
-import {ActionTypes, ProfilePageType} from "./components/Reducer/profileReducer";
-import {DialogsPageType} from "./components/Reducer/dialogsReducer";
 
 
-
-
-type AppType = {
-  posts:ProfilePageType
-  dialogs:DialogsPageType
-  dispatch:(action: ActionTypes) => void
-}
-
-function App(props:AppType) {
+function App() {
   return (
     <BrowserRouter>
       <div className='app-wrapper' >
         <Header/>
         <Navigator/>
           <div className={'app-wrapper-content'}>
-            <Route path='/dialogs' render={() => <Dialogs dialogs={props.dialogs}/>}/>
-            <Route path='/profile' render={() => <Profile posts={props.posts} dispatch={props.dispatch}/>}/>
+            <Route path='/dialogs' render={() => <Dialogs/>}/>
+            <Route path='/profile' render={() => <Profile/>}/>
             <Route path='/news' render={() => <News/>}/>
             <Route path='/music' render={() => <Music/>}/>
             <Route path='/settings' render ={() => <Settings/>}/>
