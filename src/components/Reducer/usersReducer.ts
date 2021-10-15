@@ -8,12 +8,15 @@ export type locationType = {
 
 
 export type UsersType = {
-	id: string
-	photoUrl:string
+	id: number
+	photos:{
+		small:string | null
+		large:string | null
+	}
 	followed: boolean
-	fullName: string
-	status: string
-	location: locationType
+	name: string
+	status: string | null
+	// location: locationType
 }
 
 export type UsersPageType = {
@@ -41,7 +44,7 @@ export type ActionTypes = followACType | setUsersACType
 
 export type followACType = ReturnType<typeof followAC>
 
-export const followAC = (id: string) => {
+export const followAC = (id: number) => {
 	return {
 		type: 'FOLLOW',
 		id
