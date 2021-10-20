@@ -2,3 +2,15 @@
     width: 200px;
     height: 200px;
 }
+.currentPage {
+    font-weight: bold;
+}
+.userPages {
+    padding: 0 2px;
+    cursor: pointer;
+}
+.wrapperPages {
+    display: flex;
+    flex-wrap: wrap;
+    width: 1600px;
+}
