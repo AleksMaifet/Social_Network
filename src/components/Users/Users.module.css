@@ -4,6 +4,8 @@
 }
 .currentPage {
     font-weight: bold;
+    text-decoration: underline;
+    color: white;
 }
 .userPages {
     padding: 0 2px;

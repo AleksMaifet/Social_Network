@@ -24,6 +24,7 @@ export type UsersPageType = {
 	pageSize: number
 	totalUsersCount: number
 	currentPage: number
+	isLoad:boolean
 }
 
 
@@ -31,8 +32,8 @@ const initialState: UsersPageType = {
 	users: [],
 	pageSize: 100,
 	totalUsersCount:0,
-	currentPage:1
-
+	currentPage:1,
+	isLoad:false
 }
 
 
@@ -44,13 +45,15 @@ export const userReducer = (state = initialState, action: ActionTypes): UsersPag
 			return {...state,users : action.users}
 		case "SET-CURRENT-PAGE":
 		case "SET-TOTAL-USERS":
-			return {...state,...action.pauload}
+			return {...state,...action.payload}
+		case "SET-LOAD":
+			return {...state,...action.payload}
 		default:
 			return state
 	}
 }
 
-export type ActionTypes = followACType | setUsersACType | setCurrentPageType | setTotalUsersType
+export type ActionTypes = followACType | setUsersACType | setCurrentPageType | setTotalUsersType | setLoadACType
 
 export type followACType = ReturnType<typeof followAC>
 
@@ -74,7 +77,7 @@ export type setCurrentPageType = ReturnType<typeof setcurrentPageAC>
 export const setcurrentPageAC = (currentPage:number) => {
 	return {
 		type: 'SET-CURRENT-PAGE',
-		pauload:{currentPage}
+		payload:{currentPage}
 	} as const
 }
 
@@ -83,6 +86,15 @@ export type setTotalUsersType = ReturnType<typeof setTotalUsersAC>
 export const setTotalUsersAC = (totalUsersCount:number) => {
 	return {
 		type: 'SET-TOTAL-USERS',
-		pauload:{totalUsersCount}
+		payload:{totalUsersCount}
+	} as const
+}
+
+export type setLoadACType = ReturnType<typeof setLoadAC>
+
+export const setLoadAC = (isLoad:boolean) => {
+	return {
+		type: 'SET-LOAD',
+		payload: {isLoad}
 	} as const
 }

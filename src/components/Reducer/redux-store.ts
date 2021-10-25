@@ -15,3 +15,6 @@ const reducersHandler = combineReducers({
 export type reducersHandlerType = ReturnType<typeof reducersHandler>
 
 export const store = createStore(reducersHandler);
+
+//@ts-ignore
+window.store = store

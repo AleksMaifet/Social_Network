@@ -2,9 +2,9 @@ import React, {ChangeEvent} from "react";
 import s from './MyPosts.module.css';
 import b from '../../button.module.css';
 import {MyPost} from "./Post/MyPost";
-import {ProfilePageType} from "../../Reducer/profileReducer";
 import {useSelector} from "react-redux";
 import {reducersHandlerType} from "../../Reducer/redux-store";
+import {initialStateType} from "../../Reducer/profileReducer";
 
 type MyPostsType = {
 	OnNewText: (text:string) => void
@@ -13,7 +13,7 @@ type MyPostsType = {
 
 
 export function MyPosts({OnNewText,OnNewPost}: MyPostsType) {
-	const posts = useSelector<reducersHandlerType,ProfilePageType>(state => state.profilePage)
+	const posts = useSelector<reducersHandlerType,initialStateType>(state => state.profilePage)
 
 	const newText = (e:ChangeEvent<HTMLTextAreaElement>) => {
 		OnNewText(e.currentTarget.value);
