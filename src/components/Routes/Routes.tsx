@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import {PrivateRouter} from "../Login/PrivateRouter";
 import {Profile} from "../Profile/Profile";
 import Dialogs from "../Dialogs/Dialogs";
@@ -28,6 +28,7 @@ export const Routes = () => {
 				{/*<Route path='/dialogs' render={() => <Dialogs/>}/>*/}
 				{/*<Route path='/profile/:userId?' render={() => <Profile/>}/>*/}
 				{/*<Route path='/users' render={() => <UsersContainer/>}/>*/}
+				<Route path={'/'} exact render={() => <Redirect to={PATH.PROFILE}/>}/>
 				<PrivateRouter path={PATH.PROFILE + '/:userId?'}>
 					<Profile/>
 				</PrivateRouter>
