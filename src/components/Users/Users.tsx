@@ -13,24 +13,25 @@ type UsersType = {
 	pageChangeHandler: (p: number) => void
 	newPage: Array<number>
 }
-export const Users = ({followChangeHandler, followedHandler, users, ...props}: UsersType) => {
-	const followChange = (id: number) => followChangeHandler(id)
+export const Users = React.memo(({followChangeHandler, followedHandler, users, ...props}: UsersType) => {
+	const followChange = (id: number) => {
+		followChangeHandler(id);
+	}
 	const followed = (followed: boolean) => followedHandler(followed)
 	const pageChange = (p: number) => props.pageChangeHandler(p)
-
 	const wrapperPage = users.isLoad ?
 		<div>
 			<div className={s.wrapperPages}>
 				{props.newPage.map((p, i) => <span onClick={() => pageChange(p)}
-																					 className={`${s.userPages} ${users.currentPage === p ? s.currentPage : ''}`}
-																					 key={i}>{p}</span>)}
+								className={`${s.userPages} ${users.currentPage === p ? s.currentPage : ''}`}
+								key={i}>{p}</span>)}
 			</div>
-			{users.users.map(el => <div key={el.id}>
+			{users.items.map(el => <div key={el.id}>
 				<NavLink to={'/profile/' + el.id}>
-				<img src={el.photos.small != null ? el.photos.small : userPhoto} className={s.userPhoto}/>
+					<img src={el.photos.small != null ? el.photos.small : userPhoto} className={s.userPhoto}/>
 				</NavLink>
 				<div>
-					<button className={b.default} onClick={() => followChange(el.id)}>{followed(el.followed)}</button>
+					<button className={users.followProgress.some(id => id === el.id) ? b.disable: b.default} disabled={users.followProgress.some(id => id === el.id)} onClick={(e) => followChange(el.id)}>{followed(el.followed)}</button>
 				</div>
 				<div>{el.name}</div>
 				<div>{el.status}</div>
@@ -40,9 +41,14 @@ export const Users = ({followChangeHandler, followedHandler, users, ...props}: U
 		</div>
 		:
 		<Load/>
+
+
+
+
+
 	return (
 		<>
 			{wrapperPage}
 		</>
 	)
-}
+})

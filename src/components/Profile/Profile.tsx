@@ -1,4 +1,3 @@
-import React from "react";
 import {ProfileInfo} from "./MyPosts/ProfileInfo/ProfileInfo";
 import {MyPostsConteiner} from "./MyPosts/MyPostsContainer";
 

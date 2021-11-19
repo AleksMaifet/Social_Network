@@ -1,6 +1,17 @@
 .header{
-    grid-area: header;
+    display: flex;
+    width: 595%;
+    justify-content: space-between;
 }
 .header img {
     width: 20px;
+    height: 20px;
+}
+.authWrapper {
+    width: 70px;
+    text-align: center;
+}
+
+.authWrapper a {
+    color: orange;
 }

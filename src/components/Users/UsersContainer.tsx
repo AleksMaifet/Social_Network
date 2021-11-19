@@ -1,43 +1,24 @@
 import {useDispatch, useSelector} from "react-redux";
 import {reducersHandlerType} from "../Reducer/redux-store";
 import {
-	followAC,
-	setcurrentPageAC,
-	setLoadAC,
-	setTotalUsersAC,
-	setUsersAC,
-	UsersPageType
+	getUsersPageTC,
+	getUsersTC, setFollowProgressTC, UsersPageType
 } from "../Reducer/usersReducer";
 import {Users} from "./Users";
-import axios from "axios";
 import React, {useCallback, useEffect, useMemo} from "react";
+import {Load} from "../Load/Load";
 
-type ItemsType = {
-	name:string
-	id:number
-	photos : {
-		small:string | null
-		large:string | null
-	}
-	status:string | null
-	followed:boolean
-}
-
-export type AxiosGetUsersType = {
-	items: Array<ItemsType>
-	totalCount:number
-	error: string | null
-}
 
 
 export const UsersContainer = React.memo(() => {
 	const users = useSelector<reducersHandlerType, UsersPageType>(state => state.userPage)
 	const dispatch = useDispatch()
-	const followChangeHandler = useCallback((id:number) => dispatch(followAC(id)),[dispatch])
+	const followChangeHandler = useCallback((id: number) => {
+		dispatch(setFollowProgressTC(users.items,id))
+		}, [dispatch,users])
 	const followedHandler = useCallback((followed:boolean) => {
 		return followed ? 'Follow' : 'Unfollow'
 	},[])
-
 
 	const newPage = useMemo(() => {
 		const page:Array<number> = []
@@ -49,27 +30,22 @@ export const UsersContainer = React.memo(() => {
 	},[users.pageSize, users.totalUsersCount])
 
 
-
-		useEffect(() => {
-		users.users.length === 0 && axios.get<AxiosGetUsersType>(`https://social-network.samuraijs.com/api/1.0/users?page=${users.currentPage}&count=${users.pageSize}`).then((res) => {
-			dispatch(setLoadAC(true))
-			dispatch(setUsersAC(res.data.items))
-			dispatch(setTotalUsersAC(res.data.totalCount))
-		})
-	},[dispatch,users.users.length,users.currentPage,users.pageSize])
+	useEffect(() => {
+		users.items.length === 0 && dispatch(getUsersTC(users.currentPage,users.pageSize))
+	},[dispatch,users.items,users.currentPage,users.pageSize])
 
 	const pageChangeHandler = useCallback( (p:number) => {
-		dispatch(setLoadAC(false))
-		dispatch(setcurrentPageAC(p));
-		axios.get<AxiosGetUsersType>(`https://social-network.samuraijs.com/api/1.0/users?page=${p}&count=${users.pageSize}`).then((res) => {
-			dispatch(setUsersAC(res.data.items))
-			dispatch(setLoadAC(true))
-		})
+		dispatch(getUsersPageTC(p,users.pageSize))
 	},[dispatch,users.pageSize])
 
 	return (
 		<React.Fragment>
-			<Users newPage={newPage} users={users} pageChangeHandler={pageChangeHandler} followChangeHandler={followChangeHandler} followedHandler={followedHandler}/>
+			{users.items.length === 0 ?
+				<Load/>
+				:
+				<Users newPage={newPage} users={users} pageChangeHandler={pageChangeHandler}
+							 followChangeHandler={followChangeHandler} followedHandler={followedHandler}/>
+			}
 		</React.Fragment>
 	)
 })

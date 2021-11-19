@@ -6,17 +6,17 @@ import {useSelector} from "react-redux";
 import {reducersHandlerType} from "../Reducer/redux-store";
 
 
-const Dialogs = () => {
+const Dialogs = React.memo(() => {
 	const dialogs = useSelector<reducersHandlerType, DialogsPageType>(state => state.dialogsPage);
 
 	let dialogsItem = dialogs.dialogs.map(k => {
-		return <NavLink to={`/dialogs/${k.id}`}>
+		return <NavLink key={k.id} to={`/dialogs/${k.id}`}>
 			<img className={s.avatar} src={k.img}/>
 			{k.name}
 		</NavLink>
 	})
 	let message = dialogs.messages.map(m => {
-		return <div>{m.message}</div>
+		return <div key={m.id}>{m.message}</div>
 	})
 
 
@@ -32,6 +32,6 @@ const Dialogs = () => {
 			</div>
 		</div>
 	)
-}
+})
 
 export default Dialogs;
