@@ -28,8 +28,7 @@ export const authReducer = (state=initialStateAutoLogin,action:getAuthDataHandle
 		case "GET-PROFILE":
 			return {
 				...state,
-				photo:action.profile.photos.large,
-				fullName: action.profile.fullName,
+				...action.profile
 			}
 		default:
 			return state
@@ -84,6 +83,8 @@ export const LogInTC = (FormData: LoginAuthValue) => {
 		const {data: {userId},resultCode , messages} = data
 		if( resultCode === 0) {
 			dispatch(getAuthDataAC(userId,email,password))
+			const {data} = await apiProfile.getProfile(userId)
+			dispatch(getAuthProfileDataAC(data))
 		}
 		else {
 			alert(messages)

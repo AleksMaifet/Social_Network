@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {reducersHandlerType} from "../Reducer/redux-store";
 import {Redirect} from "react-router-dom";
 import {LoginAuth, LoginAuthValue} from "./FormLogin/LoginAuth";
 import {LogInTC} from "../Reducer/auth-reducer";
+import {PATH} from "../Routes/Routes";
 
 
 export const Login = () => {
@@ -16,7 +17,7 @@ export const Login = () => {
 		<>
 			{
 				authLogin ?
-					<Redirect to={'/profile'}/>
+					<Redirect to={PATH.PROFILE}/>
 					:
 					<>
 						<h1>
