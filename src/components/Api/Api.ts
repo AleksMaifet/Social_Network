@@ -1,4 +1,5 @@
 import axios from "axios";
+import {LoginAuthValue} from "../Login/FormLogin/LoginAuth";
 
 
 type ItemsType = {
@@ -17,22 +18,16 @@ export type AxiosGetUsersType = {
 	totalCount: number
 	error: string | null
 }
-export type AxiosPostFollowType = {
+export type AxiosResponseType<T> = {
 	resultCode: number
 	messages: Array<string>
-	data: {}
+	data: T
 }
 
 export type AxiosGetAuthDataType ={
 	id:number
 	email:string
 	login:string
-}
-
-export type AxiosGetAuthType = {
-	data: AxiosGetAuthDataType
-	resultCode: number
-	messages: string[]
 }
 
 type ContactsType = {
@@ -67,26 +62,47 @@ const instance = axios.create({
 	baseURL:`https://social-network.samuraijs.com/api/1.0/`,
 })
 
-export const api = {
+export const apiUsers = {
 	getUsers: (currentPage: number, pageSize: number) => {
 		return instance.get<AxiosGetUsersType>(`users?page=${currentPage}&count=${pageSize}`,)
 	},
 	getUsersFollow: (items: Array<ItemsType>, id: number) => {
 		if (!items.filter(el => el.id === id)[0].followed) {
-		return instance.post<AxiosPostFollowType>(`follow/${id}`,
+		return instance.post<AxiosResponseType<{}>>(`follow/${id}`,
 				{},)
 		} else {
-		return instance.delete<AxiosPostFollowType>(`follow/${id}`,)
+		return instance.delete<AxiosResponseType<{}>>(`follow/${id}`,)
 		}
 	},
+}
+
+export const apiAuth = {
 	getAuth () {
-		return instance.get<AxiosGetAuthType>('/auth/me',
+		return instance.get<AxiosResponseType<AxiosGetAuthDataType>>('/auth/me',
 			{},)
 	},
-	getProfile (id:number)  {
-		return instance.get<AxiosGetProfileType>(`profile/${id}`
-			,{},)
+	LogIn(FormData:LoginAuthValue) {
+		return instance.post<AxiosResponseType<{userId:number}>>('/auth/login',
+			{...FormData},{})
+	},
+	LogOut() {
+		return instance.delete<AxiosResponseType<{}>>('/auth/login',
+			{})
 	}
 }
 
-
+export const apiProfile = {
+	getProfile (id:number)  {
+		return instance.get<AxiosGetProfileType>(`profile/${id}`
+			,{},)
+	},
+	getProfileStatus (id:number)  {
+		return instance.get<string>(`profile/status/${id}`
+			,{},)
+	},
+	updateProfileStatus (status:string)  {
+		return instance.put<AxiosResponseType<{}>>(`profile/status`,
+			{status}
+			,{},)
+	},
+}

@@ -1,5 +1,6 @@
 import {Dispatch} from "redux";
-import {api} from "../Api/Api";
+import {apiAuth, apiProfile, AxiosGetProfileType} from "../Api/Api";
+import {LoginAuthValue} from "../Login/FormLogin/LoginAuth";
 
 
 export type initialStateAutoLoginType = typeof initialStateAutoLogin
@@ -13,6 +14,7 @@ const initialStateAutoLogin = {
 	resultCode: null,
 	messages:null,
 	photo: null as string | null,
+	fullName: null as string | null,
 }
 
 
@@ -23,10 +25,11 @@ export const authReducer = (state=initialStateAutoLogin,action:getAuthDataHandle
 				...state,
 				data:action.payload,
 			}
-		case "GET-PHOTO":
+		case "GET-PROFILE":
 			return {
 				...state,
-				photo:action.payload.photo
+				photo:action.profile.photos.large,
+				fullName: action.profile.fullName,
 			}
 		default:
 			return state
@@ -35,12 +38,12 @@ export const authReducer = (state=initialStateAutoLogin,action:getAuthDataHandle
 
 
 
-type getAuthDataHandlerType = getAuthDataACType | getAuthDataPhotoType
+type getAuthDataHandlerType = getAuthDataACType | getAuthProfileDataACType
 
 
 export type getAuthDataACType = ReturnType<typeof getAuthDataAC>
 
-export const getAuthDataAC = (userId:number,email:string,login:string) => {
+export const getAuthDataAC = (userId:number | null,email:string | null,login:string | null) => {
 	return {
 		type:'GET-AUTH-DATA',
 		payload:{
@@ -51,24 +54,55 @@ export const getAuthDataAC = (userId:number,email:string,login:string) => {
 	} as const
 }
 
-export type getAuthDataPhotoType = ReturnType<typeof getAuthDataPhotoAC>
+export type getAuthProfileDataACType = ReturnType<typeof getAuthProfileDataAC>
 
-export const getAuthDataPhotoAC = (photo:string) => {
+export const getAuthProfileDataAC = (profile: AxiosGetProfileType) => {
 	return {
-		type:'GET-PHOTO',
-		payload:{
-			photo
-		}
+		type: 'GET-PROFILE',
+		profile
 	} as const
 }
 
-
 export const getAuthTC = () => {
 	return async (dispatch: Dispatch) => {
-		const {data} = await api.getAuth()
-		const {data: {id, email, login}} = data
-		dispatch(getAuthDataAC(id, email, login))
-		const {data: {photos}} = await api.getProfile(id)
-		dispatch(getAuthDataPhotoAC(photos.large))
+		const {data} = await apiAuth.getAuth()
+		const {data: {id, email, login}, resultCode, messages} = data
+		if (resultCode === 0) {
+			dispatch(getAuthDataAC(id, email, login))
+			const {data} = await apiProfile.getProfile(id)
+			dispatch(getAuthProfileDataAC(data))
+		} else {
+			alert(messages)
+		}
 	}
 }
+
+export const LogInTC = (FormData: LoginAuthValue) => {
+	return async (dispatch: Dispatch) => {
+		const {email, password,} = FormData
+		const {data} = await apiAuth.LogIn(FormData)
+		const {data: {userId},resultCode , messages} = data
+		if( resultCode === 0) {
+			dispatch(getAuthDataAC(userId,email,password))
+		}
+		else {
+			alert(messages)
+		}
+	}
+}
+
+export const LogOutTC = () => {
+	return async (dispatch: Dispatch) => {
+		const {data} =	await apiAuth.LogOut()
+		const {resultCode} = data
+		if(resultCode === 0) {
+			const FormData = {
+				userId:null,
+				email:null,
+				login:null
+			}
+			dispatch(getAuthDataAC(FormData.userId,FormData.email,FormData.login))
+		}
+	}
+}
+

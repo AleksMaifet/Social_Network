@@ -8,10 +8,18 @@
     height: 20px;
 }
 .authWrapper {
-    width: 70px;
+    width: 200px;
     text-align: center;
+    display: flex;
+    justify-content: space-between;
 }
 
 .authWrapper a {
     color: orange;
+}
+.authWrapperLoginBlock {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 70px;
 }

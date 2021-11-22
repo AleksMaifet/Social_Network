@@ -1,7 +1,6 @@
 import {v1} from "uuid";
 import {Dispatch} from "redux";
-import axios from "axios";
-import {api, AxiosGetProfileType} from "../Api/Api";
+import {apiProfile, AxiosGetProfileType} from "../Api/Api";
 
 
 
@@ -9,6 +8,7 @@ const ADD_POST = "ADD-POST";
 const ADD_NEW_MESSAGE = "ADD-NEW-MESSAGE";
 const ADD_NEW_PROFILE = 'ADD-NEW-PROFILE';
 const SET_LOAD_PROFILE = 'SET-LOAD-PROFILE';
+const SET_STATUS = 'SET-STATUS';
 
 
 export type PostType = {
@@ -29,7 +29,8 @@ const initialStateProfile = {
 	],
 	newPostText: '',
 	isLoad:false,
-	profile:null as AxiosGetProfileType | null
+	profile:null as AxiosGetProfileType | null,
+	status:'',
 }
 
 
@@ -56,32 +57,35 @@ export const profileReducer = (state = initialStateProfile, action: ActionTypes)
 				...state,
 				...action.payload
 			}
+		case SET_STATUS:
+			return {
+				...state,
+				status:action.status
+			}
 		default:
 			return state
 	}
 }
 
 
-
-
-
-
-
-
-
-
-export type ActionTypes = ReturnType<typeof AddPostAC> | ReturnType<typeof AddNewPostAC> | ReturnType<typeof AddNewProfileAC> | ReturnType<typeof setLoadProfileAC>
+export type ActionTypes =
+	ReturnType<typeof AddPostAC>
+	| ReturnType<typeof AddNewPostAC>
+	| ReturnType<typeof AddNewProfileAC>
+	| ReturnType<typeof setLoadProfileAC>
+	| ReturnType<typeof setStatusProfileAC>
 
 export const AddPostAC = () => {
+	debugger;
 	return {
 		type: ADD_POST
 	} as const
 }
 
 
-export const AddNewPostAC = (newMessage : string) => {
+export const AddNewPostAC = (newMessage: string) => {
 	return {
-		type:ADD_NEW_MESSAGE,
+		type: ADD_NEW_MESSAGE,
 		newMessage
 	} as const
 }
@@ -100,10 +104,31 @@ export const setLoadProfileAC = (isLoad:boolean) => {
 	} as const
 }
 
+export const setStatusProfileAC = (status:string) => {
+	return {
+		type: SET_STATUS,
+		status,
+	} as const
+}
 
-export const AddNewProfileTC = (userID:string = '2') => {
+
+export const AddNewProfileTC = (userID:string = '15883') => {
 	return async (dispatch:Dispatch) => {
-		 const {data} = await api.getProfile(+userID)
+		 const {data} = await apiProfile.getProfile(+userID)
 				dispatch(AddNewProfileAC(data))
+	}
+}
+
+export const setNewProfileStatusTC = (userID: string = '15883') => {
+	return async (dispatch: Dispatch) => {
+	const {data}	= await apiProfile.getProfileStatus(+userID)
+		dispatch(setStatusProfileAC(data))
+	}
+}
+
+export const updateNewProfileStatusTC = (status:string) => {
+	return async (dispatch:Dispatch) => {
+	const {data: {resultCode}}	= await apiProfile.updateProfileStatus(status)
+		if (resultCode === 0) dispatch(setStatusProfileAC(status))
 	}
 }

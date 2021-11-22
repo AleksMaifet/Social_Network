@@ -13,6 +13,8 @@ type UsersType = {
 	pageChangeHandler: (p: number) => void
 	newPage: Array<number>
 }
+
+
 export const Users = React.memo(({followChangeHandler, followedHandler, users, ...props}: UsersType) => {
 	const followChange = (id: number) => {
 		followChangeHandler(id);

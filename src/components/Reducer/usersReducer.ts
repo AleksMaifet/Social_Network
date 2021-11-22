@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import {api} from "../Api/Api";
+import {apiUsers} from "../Api/Api";
 
 
 export type locationType = {
@@ -126,7 +126,7 @@ export const setFollowProgressAC = (isProgress:boolean, userId:number) => {
 export const setFollowProgressTC = (items: Array<ItemsType>, id: number) => {
 	return async (dispatch: Dispatch) => {
 		dispatch(setFollowProgressAC(true, id))
-		const {data: {resultCode}} = await api.getUsersFollow(items, id)
+		const {data: {resultCode}} = await apiUsers.getUsersFollow(items, id)
 		resultCode === 0 && dispatch(followAC(id))
 		dispatch(setFollowProgressAC(false, id))
 	}
@@ -135,7 +135,7 @@ export const setFollowProgressTC = (items: Array<ItemsType>, id: number) => {
 
 export const getUsersTC = (currentPage: number, pageSize: number) => {
 	return async (dispatch: Dispatch) => {
-		const {data} = await api.getUsers(currentPage, pageSize)
+		const {data} = await apiUsers.getUsers(currentPage, pageSize)
 		const {items, totalCount} = data
 		dispatch(setUsersAC(items))
 		dispatch(setTotalUsersAC(totalCount))
@@ -146,7 +146,7 @@ export const getUsersPageTC = (p:number,pageSize:number) => {
 	return async (dispatch:Dispatch) => {
 		dispatch(setLoadUsersAC(false))
 		dispatch(setcurrentPageAC(p));
-		const {data} = 	await api.getUsers(p,pageSize)
+		const {data} = 	await apiUsers.getUsers(p,pageSize)
 		const {items} = data
 		dispatch(setUsersAC(items))
 		dispatch(setLoadUsersAC(true))

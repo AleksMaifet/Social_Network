@@ -2,17 +2,22 @@
     width: 200px;
     height: 200px;
 }
-.currentPage {
+.userPages.currentPage {
+   text-decoration: underline;
     font-weight: bold;
-    text-decoration: underline;
     color: white;
 }
 .userPages {
-    padding: 0 2px;
+    padding: 1px 3px;
+    margin: 0 10px;
     cursor: pointer;
+    color: white;
+    width: 27px;
+    text-align: center;
 }
 .wrapperPages {
     display: flex;
     flex-wrap: wrap;
     width: 1600px;
+    margin: 10px 0;
 }

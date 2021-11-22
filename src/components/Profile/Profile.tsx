@@ -4,9 +4,9 @@ import {MyPostsConteiner} from "./MyPosts/MyPostsContainer";
 
 export function Profile() {
 	return (
-		<div>
+		<>
 			<ProfileInfo/>
 			<MyPostsConteiner/>
-		</div>
+		</>
 	)
 }

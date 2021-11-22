@@ -7,6 +7,7 @@ import {
 import {Users} from "./Users";
 import React, {useCallback, useEffect, useMemo} from "react";
 import {Load} from "../Load/Load";
+import {createPages} from "./createPages";
 
 
 
@@ -23,11 +24,9 @@ export const UsersContainer = React.memo(() => {
 	const newPage = useMemo(() => {
 		const page:Array<number> = []
 		const pagesCount = Math.ceil(users.totalUsersCount / users.pageSize)
-		for (let i = 1; i <= pagesCount; i++) {
-			page.push(i)
-		}
+		createPages(page,pagesCount,users.currentPage)
 		return page
-	},[users.pageSize, users.totalUsersCount])
+	},[users.currentPage, users.pageSize, users.totalUsersCount])
 
 
 	useEffect(() => {
