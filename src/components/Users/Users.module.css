@@ -18,6 +18,5 @@
 .wrapperPages {
     display: flex;
     flex-wrap: wrap;
-    width: 1600px;
     margin: 10px 0;
 }

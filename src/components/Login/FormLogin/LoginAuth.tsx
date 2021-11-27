@@ -1,4 +1,4 @@
-import {Field, Form, Formik} from "formik";
+import {FormikErrors,useFormik} from "formik";
 import s from "./LoginAuth.module.css";
 import React from "react";
 
@@ -12,57 +12,60 @@ type LoginAuthType = {
 	callback: (FormData:LoginAuthValue) => void
 }
 
-export const LoginAuth =  ({callback}:LoginAuthType) => {
 
-	const initialValues = {
-		email: '',
-		password: '',
-		checkbox:'',
+
+export const LoginAuth = ({callback}:LoginAuthType) => {
+
+	const validate = (values: LoginAuthValue) => {
+		const errors:FormikErrors<LoginAuthValue> = {};
+		if (!values.email) {
+			errors.email = 'Required';
+		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+			errors.email = 'Invalid email address';
+		}
+		if (!values.password) {
+			errors.password = 'Invalid email address';
+		}
+		return errors;
 	};
-	const validateEmail = (value:string) => {
-		let error;
-		if (!value) {
-			error = 'Required';
-		} else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
-			error = 'Invalid email address';
-		}
-		return error;
-	}
 
-	const validatePass = (value:string) => {
-		let error;
-		if (!value) {
-			error = 'Invalid email address';
-		}
-		return error;
-	}
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+			checkbox: false,
+		},
+		validate,
+		onSubmit: values => {
+			callback(values)
+		},
+	})
+
 	return (
 		<>
-			<Formik
-				initialValues={initialValues}
-				onSubmit={(values, actions) => {
-				callback(values)
-				}}
-			>
-				{({ errors, touched,isSubmitting}) => (
-					<Form>
-						<div>
-							<Field className={ errors.email && touched.email && s.errorStyle} id="email" name="email"  placeholder={'Login'} validate={validateEmail}/>
-							{errors.email && touched.email && <div style={{color:'red',fontWeight:'bold'}}>{errors.email}</div>}
-						</div>
-						<div>
-							<Field className={ errors.password &&  touched.password && s.errorStyle} id="password" name="password" placeholder={'Password'} validate={validatePass} type={'password'}/>
-							{errors.password && touched.password && <div style={{color:'red',fontWeight:'bold'}}>{errors.password}</div>}
-						</div>
-						<div>
-							<Field id='checkbox' name='checkbox' type='checkbox'/> remember me
-						</div>
-						<div>
-							<button type="submit" >Login</button>
-						</div>
-					</Form>
-				)}
-			</Formik>
+			<form onSubmit={formik.handleSubmit}>
+				<div>
+					<input
+						className={formik.errors.email && formik.touched.email ? s.errorStyle : ''} id={'email'} {...formik.getFieldProps('email')}
+						placeholder={'Login'}/>
+					{formik.errors.email && formik.touched.email &&
+					<div style={{color: 'red', fontWeight: 'bold'}}>{formik.errors.email}</div>}
+				</div>
+				<div>
+					<input
+						className={formik.errors.password && formik.touched.password ? s.errorStyle : '' } id={'password'} {...formik.getFieldProps('password')}
+						placeholder={'Password'} type={'password'}
+						autoComplete={'on'}/>
+					{formik.errors.password && formik.touched.password &&
+					<div style={{color: 'red', fontWeight: 'bold'}}>{formik.errors.password}</div>}
+				</div>
+				<div>
+					<input checked={formik.values.checkbox} {...formik.getFieldProps('checkbox')} id={'checkbox'} type='checkbox'/> remember me
+				</div>
+				<div>
+					<button type={'submit'}>Login</button>
+				</div>
+			</form>
 		</>
 	)
 }

@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {apiAuth, apiProfile, AxiosGetProfileType} from "../Api/Api";
 import {LoginAuthValue} from "../Login/FormLogin/LoginAuth";
+import {store} from "./redux-store";
 
 
 export type initialStateAutoLoginType = typeof initialStateAutoLogin
@@ -75,16 +76,14 @@ export const getAuthTC = () => {
 		}
 	}
 }
+export type AppDispatch = typeof store.dispatch;
 
 export const LogInTC = (FormData: LoginAuthValue) => {
-	return async (dispatch: Dispatch) => {
-		const {email, password,} = FormData
+	return async (dispatch:AppDispatch) => {
 		const {data} = await apiAuth.LogIn(FormData)
-		const {data: {userId},resultCode , messages} = data
+		const {resultCode , messages} = data
 		if( resultCode === 0) {
-			dispatch(getAuthDataAC(userId,email,password))
-			const {data} = await apiProfile.getProfile(userId)
-			dispatch(getAuthProfileDataAC(data))
+		dispatch(getAuthTC())
 		}
 		else {
 			alert(messages)

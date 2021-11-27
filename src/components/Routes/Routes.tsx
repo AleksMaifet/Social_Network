@@ -25,7 +25,7 @@ export const Routes = () => {
 	return (
 		<div>
 			<Switch>
-				<Route path={'/'} exact render={() => <Redirect to={PATH.PROFILE}/>}/>
+				<Route path={'/'} exact render={() => <Redirect to={PATH.LOGIN}/>}/>
 				<PrivateRouter path={PATH.PROFILE + '/:userId?'}>
 					<Profile/>
 				</PrivateRouter>
@@ -34,6 +34,9 @@ export const Routes = () => {
 				</PrivateRouter>
 				<PrivateRouter path={PATH.USERS}>
 					<UsersContainer/>
+				</PrivateRouter>
+				<PrivateRouter path={PATH.DIALOGS}>
+					<Login/>
 				</PrivateRouter>
 				<Route path={PATH.LOGIN} render={() => <Login/>}/>
 				<Route path='/news' render={() => <News/>}/>
