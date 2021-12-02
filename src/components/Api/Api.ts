@@ -57,14 +57,14 @@ export type AxiosGetProfileType = {
 const instance = axios.create({
 	withCredentials: true,
 	headers: {
-		'API-KEY': '772b566d-453d-4f00-a46a-f93f13413638'
+		'API-KEY': '5c7c1e5a-aa4c-4b00-a92b-b6f5df506a28'
 	},
 	baseURL:`https://social-network.samuraijs.com/api/1.0/`,
 })
 
 export const apiUsers = {
-	getUsers: (currentPage: number, pageSize: number) => {
-		return instance.get<AxiosGetUsersType>(`users?page=${currentPage}&count=${pageSize}`,)
+	getUsers: (currentPage: number, pageSize: number,term:string= '') => {
+		return instance.get<AxiosGetUsersType>(`users?page=${currentPage}&count=${pageSize}&term=${term}`,)
 	},
 	getUsersFollow: (items: Array<ItemsType>, id: number) => {
 		if (!items.filter(el => el.id === id)[0].followed) {

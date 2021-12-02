@@ -30,21 +30,19 @@ export const UsersContainer = React.memo(() => {
 
 
 	useEffect(() => {
-		users.items.length === 0 && dispatch(getUsersTC(users.currentPage,users.pageSize))
-	},[dispatch,users.items,users.currentPage,users.pageSize])
+		dispatch(getUsersTC(1,users.pageSize))
+	},[dispatch,users.pageSize])
+
 
 	const pageChangeHandler = useCallback( (p:number) => {
-		dispatch(getUsersPageTC(p,users.pageSize))
-	},[dispatch,users.pageSize])
+		dispatch(getUsersPageTC(p,users.pageSize,users.searchFilter.term))
+	},[dispatch,users.pageSize,users.searchFilter.term])
+
 
 	return (
 		<React.Fragment>
-			{users.items.length === 0 ?
-				<Load/>
-				:
 				<Users newPage={newPage} users={users} pageChangeHandler={pageChangeHandler}
 							 followChangeHandler={followChangeHandler} followedHandler={followedHandler}/>
-			}
 		</React.Fragment>
 	)
 })

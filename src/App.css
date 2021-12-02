@@ -1,6 +1,7 @@
 body {
   margin: 0 auto;
   margin-right: calc(-1 * (100vw - 100%));
+  overflow-x: hidden;
 }
 .app-wrapper {
   display: grid;

@@ -27,6 +27,9 @@ export type UsersPageType = {
 	currentPage: number
 	isLoad:boolean
 	followProgress:Array<null | number>
+	searchFilter:{
+		term:string
+	}
 }
 
 
@@ -37,6 +40,9 @@ const initialState: UsersPageType = {
 	currentPage:1,
 	isLoad:true,
 	followProgress:[],
+	searchFilter:{
+		term:''
+	}
 }
 
 
@@ -60,12 +66,24 @@ export const userReducer = (state = initialState, action: ActionTypes): UsersPag
 				? [...state.followProgress, action.payload.userId]
 				: state.followProgress.filter(id => id !== action.payload.userId)
 			}
+		case "SET-SEARCH-USERS":
+			return {
+				...state,
+				searchFilter:action.payload
+			}
 		default:
 			return state
 	}
 }
 
-export type ActionTypes = followACType | setUsersACType | setCurrentPageType | setTotalUsersType | setLoadUsersACType | setFollowProgressACType
+export type ActionTypes =
+	followACType
+	| setUsersACType
+	| setCurrentPageType
+	| setTotalUsersType
+	| setLoadUsersACType
+	| setFollowProgressACType
+	| setSearchUsersACType
 
 export type followACType = ReturnType<typeof followAC>
 
@@ -123,6 +141,17 @@ export const setFollowProgressAC = (isProgress:boolean, userId:number) => {
 	} as const
 }
 
+export type setSearchUsersACType = ReturnType<typeof setSearchUsersAC>
+
+export const setSearchUsersAC = (term:string = '') => {
+	return {
+		type: 'SET-SEARCH-USERS',
+		payload:{
+			term
+		}
+	} as const
+}
+
 export const setFollowProgressTC = (items: Array<ItemsType>, id: number) => {
 	return async (dispatch: Dispatch) => {
 		dispatch(setFollowProgressAC(true, id))
@@ -133,20 +162,24 @@ export const setFollowProgressTC = (items: Array<ItemsType>, id: number) => {
 }
 
 
-export const getUsersTC = (currentPage: number, pageSize: number) => {
+export const getUsersTC = (currentPage: number, pageSize: number, term?: string) => {
 	return async (dispatch: Dispatch) => {
-		const {data} = await apiUsers.getUsers(currentPage, pageSize)
+		dispatch(setLoadUsersAC(false))
+		const {data} = await apiUsers.getUsers(currentPage, pageSize, term)
 		const {items, totalCount} = data
+		dispatch(setSearchUsersAC(term))
+		dispatch(setcurrentPageAC(currentPage));
 		dispatch(setUsersAC(items))
 		dispatch(setTotalUsersAC(totalCount))
+		dispatch(setLoadUsersAC(true))
 	}
 }
 
-export const getUsersPageTC = (p:number,pageSize:number) => {
+export const getUsersPageTC = (p:number,pageSize:number,term?:string) => {
 	return async (dispatch:Dispatch) => {
 		dispatch(setLoadUsersAC(false))
 		dispatch(setcurrentPageAC(p));
-		const {data} = 	await apiUsers.getUsers(p,pageSize)
+		const {data} = 	await apiUsers.getUsers(p,pageSize,term)
 		const {items} = data
 		dispatch(setUsersAC(items))
 		dispatch(setLoadUsersAC(true))
