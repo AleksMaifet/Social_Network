@@ -16,6 +16,7 @@ const initialStateAutoLogin = {
 	messages:null,
 	photo: null as string | null,
 	fullName: null as string | null,
+	isLoad:false
 }
 
 
@@ -31,6 +32,8 @@ export const authReducer = (state=initialStateAutoLogin,action:getAuthDataHandle
 				...state,
 				...action.profile
 			}
+		case "SET-LOAD-AUTH":
+			return {...state, ...action.payload}
 		default:
 			return state
 	}
@@ -38,7 +41,7 @@ export const authReducer = (state=initialStateAutoLogin,action:getAuthDataHandle
 
 
 
-type getAuthDataHandlerType = getAuthDataACType | getAuthProfileDataACType
+type getAuthDataHandlerType = getAuthDataACType | getAuthProfileDataACType | SetLoadAuthsACType
 
 
 export type getAuthDataACType = ReturnType<typeof getAuthDataAC>
@@ -63,8 +66,18 @@ export const getAuthProfileDataAC = (profile: AxiosGetProfileType) => {
 	} as const
 }
 
+export type SetLoadAuthsACType = ReturnType<typeof setLoadAuthsAC>
+
+export const setLoadAuthsAC = (isLoad:boolean) => {
+	return {
+		type: 'SET-LOAD-AUTH',
+		payload: {isLoad}
+	} as const
+}
+
 export const getAuthTC = () => {
 	return async (dispatch: Dispatch) => {
+		dispatch(setLoadAuthsAC(true))
 		const {data} = await apiAuth.getAuth()
 		const {data: {id, email, login}, resultCode, messages} = data
 		if (resultCode === 0) {
@@ -74,6 +87,7 @@ export const getAuthTC = () => {
 		} else {
 			alert(messages)
 		}
+		dispatch(setLoadAuthsAC(false))
 	}
 }
 export type AppDispatch = typeof store.dispatch;

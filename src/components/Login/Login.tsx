@@ -1,13 +1,13 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {reducersHandlerType} from "../Reducer/redux-store";
-import {Redirect} from "react-router-dom";
+import {Navigate, useLocation} from "react-router-dom";
 import {LoginAuth, LoginAuthValue} from "./FormLogin/LoginAuth";
 import {LogInTC} from "../Reducer/auth-reducer";
-import {PATH} from "../Routes/Routes";
 
 
 export const Login = () => {
+	const location = useLocation()
 	const authLogin = useSelector<reducersHandlerType, string | null>(state => state.auth.data.login)
 	const dispatch = useDispatch()
 	const LogIn = (FormData:LoginAuthValue) => {
@@ -17,7 +17,7 @@ export const Login = () => {
 		<>
 			{
 				authLogin ?
-					<Redirect to={PATH.PROFILE}/>
+					<Navigate to={location.state.from.pathname}/>
 					:
 					<>
 						<h1>

@@ -38,7 +38,7 @@ const initialState: UsersPageType = {
 	pageSize: 100,
 	totalUsersCount:0,
 	currentPage:1,
-	isLoad:true,
+	isLoad:false,
 	followProgress:[],
 	searchFilter:{
 		term:''
@@ -164,25 +164,25 @@ export const setFollowProgressTC = (items: Array<ItemsType>, id: number) => {
 
 export const getUsersTC = (currentPage: number, pageSize: number, term?: string) => {
 	return async (dispatch: Dispatch) => {
-		dispatch(setLoadUsersAC(false))
+		dispatch(setLoadUsersAC(true))
 		const {data} = await apiUsers.getUsers(currentPage, pageSize, term)
 		const {items, totalCount} = data
 		dispatch(setSearchUsersAC(term))
 		dispatch(setcurrentPageAC(currentPage));
 		dispatch(setUsersAC(items))
 		dispatch(setTotalUsersAC(totalCount))
-		dispatch(setLoadUsersAC(true))
+		dispatch(setLoadUsersAC(false))
 	}
 }
 
 export const getUsersPageTC = (p:number,pageSize:number,term?:string) => {
 	return async (dispatch:Dispatch) => {
-		dispatch(setLoadUsersAC(false))
+		dispatch(setLoadUsersAC(true))
 		dispatch(setcurrentPageAC(p));
 		const {data} = 	await apiUsers.getUsers(p,pageSize,term)
 		const {items} = data
 		dispatch(setUsersAC(items))
-		dispatch(setLoadUsersAC(true))
+		dispatch(setLoadUsersAC(false))
 	}
 }
 

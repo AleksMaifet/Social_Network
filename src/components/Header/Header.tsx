@@ -1,26 +1,18 @@
-import React, {useEffect} from "react";
+import React from "react";
 import s from './Header.module.css';
 import {useDispatch, useSelector} from "react-redux";
-import {getAuthTC,LogOutTC} from "../Reducer/auth-reducer";
+import {LogOutTC} from "../Reducer/auth-reducer";
 import {reducersHandlerType} from "../Reducer/redux-store";
 import userPhoto from "../../img/default-avatar.png";
 import b from '../button.module.css'
 import LogoHeader from '../../img/174867.png'
 
 
-
-
-
-
 export const Header =React.memo((props) => {
 	const dispatch = useDispatch()
 	const authLogin = useSelector<reducersHandlerType,string | null>(state => state.auth.data.login)
-	const authName = useSelector<reducersHandlerType,string | null>(state => state.auth.fullName)
 	const authPhoto = useSelector<reducersHandlerType, string | null>(state => state.auth.photo)
 
-	useEffect(() => {
-		dispatch(getAuthTC())
-	}, [dispatch])
 
 	const LogOut = () => {
 		dispatch(LogOutTC())

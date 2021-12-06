@@ -1,14 +1,9 @@
 import {useDispatch, useSelector} from "react-redux";
 import {reducersHandlerType} from "../Reducer/redux-store";
-import {
-	getUsersPageTC,
-	getUsersTC, setFollowProgressTC, UsersPageType
-} from "../Reducer/usersReducer";
+import {getUsersPageTC, getUsersTC, setFollowProgressTC, UsersPageType} from "../Reducer/usersReducer";
 import {Users} from "./Users";
 import React, {useCallback, useEffect, useMemo} from "react";
-import {Load} from "../Load/Load";
 import {createPages} from "./createPages";
-
 
 
 export const UsersContainer = React.memo(() => {

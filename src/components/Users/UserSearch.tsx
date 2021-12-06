@@ -1,15 +1,11 @@
-import React, {ChangeEvent,KeyboardEvent, useState} from "react";
-import {useDispatch} from "react-redux";
-import {getUsersTC, UsersPageType} from "../Reducer/usersReducer";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {getUsersTC} from "../Reducer/usersReducer";
+import {reducersHandlerType} from "../Reducer/redux-store";
 
 
-type UserSearchType = {
-	users: UsersPageType
-}
-
-
-
-export const UserSearch = React.memo(({...props}:UserSearchType) => {
+export const UserSearch = React.memo(({...props}) => {
+	const usersPageSize = useSelector<reducersHandlerType, number>(state => state.userPage.pageSize)
 	const dispatch = useDispatch()
 	const [value,setValue] = useState<string>('')
 	const searchUsers = (e:ChangeEvent<HTMLInputElement>) => {
@@ -17,7 +13,7 @@ export const UserSearch = React.memo(({...props}:UserSearchType) => {
 	}
 	const searchUsersPress = (e:KeyboardEvent<HTMLInputElement>) => {
 		if(e.key === 'Enter') {
-			dispatch(getUsersTC(1, props.users.pageSize, value))
+			dispatch(getUsersTC(1, usersPageSize, value))
 			setValue('')
 		}
 	}

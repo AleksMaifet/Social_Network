@@ -4,7 +4,7 @@ import s from './Users.module.css'
 import b from '../button.module.css'
 import userPhoto from '../../img/default-avatar.png'
 import {Load} from "../Load/Load";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {UserSearch} from "./UserSearch";
 
 type UsersType = {
@@ -25,15 +25,17 @@ export const Users = React.memo(({followChangeHandler, followedHandler, users, .
 		props.pageChangeHandler(p)
 	}
 	const wrapperPage = users.isLoad ?
+		<Load/>
+		:
 		<div>
 			<div className={s.wrapperPages}>
 				{props.newPage.map((p, i) => <span onClick={() => pageChange(p)}
 								className={`${s.userPages} ${users.currentPage === p ? s.currentPage : ''}`}
 								key={i}>{p}</span>)}
 			</div>
-			<UserSearch users={users}/>
+			<UserSearch/>
 			{users.items.map(el => <div key={el.id}>
-				<NavLink to={'/profile/' + el.id}>
+				<NavLink key={el.id} to={`/profile/${el.id}`}>
 					<img src={el.photos.small != null ? el.photos.small : userPhoto} className={s.userPhoto}/>
 				</NavLink>
 				<div>
@@ -45,8 +47,6 @@ export const Users = React.memo(({followChangeHandler, followedHandler, users, .
 				{/*<div>{el.location.city}</div>*/}
 			</div>)}
 		</div>
-		:
-		<Load/>
 
 
 
